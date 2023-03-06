@@ -23,3 +23,6 @@ Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('r
 Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/add', [\App\Http\Controllers\HomeController::class, 'add'])->name('add');
+Route::get('addbill',[App\Http\Controllers\HomeController::class, 'addBill']);
+Route::get('getBills',[App\Http\Controllers\HomeController::class, 'getBills']);
+Route::get('getRecentBill',[App\Http\Controllers\HomeController::class, 'getRecentBill']);

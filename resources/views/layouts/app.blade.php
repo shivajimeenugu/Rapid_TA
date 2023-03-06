@@ -71,7 +71,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+
+{{-- <script type="module" >
+
+import pincode from "{{ asset('js/pincode-master/lib/pincode.js') }}";
+console.log(pincode);
+</script> --}}
 <script>
+
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -102,7 +110,7 @@ code += '</div>\n';
 code += '<div class="flex gap-y-1 flex-col">\n';
 code += '<div class="flex">\n';
 code += '<div class="relative w-full">\n';
-code += '<input onKeyUp="update_pincobde(this.value)" type="number" id="from_pincode" name="from_pincode" class="block p-1 w-full text-sm outline-none rounded-r-lg rounded-l-lg border-[1px] border-blue-500 hover:border-blue-700" required>\n';
+code += '<input  onkeyup="update_pincobde(1,this.value)" type="number" id="from_pincode" name="from_pincode" class="block p-1 w-full text-sm outline-none rounded-r-lg rounded-l-lg border-[1px] border-blue-500 hover:border-blue-700" required>\n';
 code += '<button id="from_pincode_refresh" class="absolute top-0 right-0 p-1 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">\n';
 code += '<i class="fa fa-redo-alt"></i>\n';
 code += '</button>\n';
@@ -126,13 +134,13 @@ code += '</div>\n';
 code += '<div class="flex gap-y-1 flex-col">\n';
 code += '<div class="flex">\n';
 code += '<div class="relative w-full">\n';
-code += '<input type="number" id="to_pincode" name="to_pincode" class="block p-1 w-full text-sm outline-none rounded-r-lg rounded-l-lg border-[1px] border-blue-500 hover:border-blue-700" required>\n';
-code += '<button id="to_pincode_refresh" class="absolute top-0 right-0 p-1 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">\n';
+code += '<input  onkeyup="update_pincobde(2,this.value)" type="number" id="to_pincode" name="to_pincode" class="block p-1 w-full text-sm outline-none rounded-r-lg rounded-l-lg border-[1px] border-blue-500 hover:border-blue-700" required>\n';
+code += '<button  id="to_pincode_refresh" class="absolute top-0 right-0 p-1 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">\n';
 code += '<i class="fa fa-redo-alt"></i>\n';
 code += '</button>\n';
 code += '</div>\n';
 code += '</div>\n';
-code += '<select name="from_place" id="from_place" class="outline-none p-1 rounded-md border-[1px] border-blue-500 hover:border-blue-700">\n';
+code += '<select name="to_place" id="to_place" class="outline-none p-1 rounded-md border-[1px] border-blue-500 hover:border-blue-700">\n';
 code += '<option value=""></option>\n';
 code += '</select>\n';
 code += '</div>\n';
@@ -141,7 +149,7 @@ code += '<div class="flex-cols mt-1 w-full">\n';
 code += '<div class="">Select Mode</div>\n';
 code += '<div class="flex radio-toolbar justify-evenly">\n';
 code += '<div class="">\n';
-code += '<input class="opacity-0" type="radio" id="mode_bike" name="mode" value="bike" checked>\n';
+code += '<input class="opacity-0" type="radio" id="mode_bike" name="mode" value="bike" >\n';
 code += '<label class="rounded px-3 py-2 items-center flex" for="mode_bike"><i class="fa fa-motorcycle"></i></label>\n';
 code += '</div>\n';
 code += '<div class="">\n';
@@ -165,31 +173,32 @@ code += '</div>\n';
 code += '</div>\n';
 code += '<div class="ffoter pt-3">\n';
 code += '<div class="flex justify-between px-5">\n';
-code += '<button onClick="Swal.close()" class="text-white right-2.5 bottom-2.5 bg-gray-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Cancle </button>\n';
-code += '<button onClick="tostTest()" class="text-white right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Add </button>\n';
+code += '<button onClick="adding_done()" class="text-white right-2.5 bottom-2.5 bg-gray-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Cancle </button>\n';
+code += '<button onClick="add_bill()" class="text-white right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Add </button>\n';
 code += '</div>\n';
 code += '</div>\n';
 code += '</div>\n';
-code += '<div class="bg-[#eff6ff] mt-2 p-2 mx-2 mt-2 shadow duration-300 hover:bg-[#dbeafe] hover:shadow-xl rounded-md">\n';
-code += '<div class="ctop flex justify-between items-center">\n';
-code += '<div class="sno px-3 py-1 font-extrabold text-white text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full">Recent</div>\n';
-code += '<div class="date font-medium"><i class="fa fa-calendar-alt text-blue-700 font-medium"></i> 03-04-2023</div>\n';
-code += '<div class="edit"><i class="fa fa-pen text-blue-700 font-medium"></i></div>\n';
-code += '</div>\n';
-code += '<div class="from-to pt-3 flex justify-evenly font-medium">\n';
-code += '<div class="from">Tiruvuru</div>\n';
-code += '<div class="">-- <i class="text-blue-700 fa fa-motorcycle"></i> --</div>\n';
-code += '<div class="to">Vijayawada</div>\n';
-code += '</div>\n';
-code += '<div class="cbottom pt-3 flex">\n';
-code += '<div class="flex justify-between w-9/12 font-medium">\n';
-code += '<div class="da"><i class="text-blue-700 font-medium fa fa-soup"></i>100/-</div>\n';
-code += '<div class="km"></i>25KM</div>\n';
-code += '<div class="price"><i class="text-blue-700 font-medium fa fa-wallet"></i> 2000/-</i></div>\n';
-code += '</div>\n';
-code += '<div class="w-3/12 justify-end flex font-extrabold"><i class="text-blue-700 font-medium fa fa-file-invoice-dollar"></i>&nbsp2125/-</div>\n';
-code += '</div>\n';
-code += '</div>\n';
+// code += '<div class="bg-[#eff6ff] mt-2 p-2 mx-2 mt-2 shadow duration-300 hover:bg-[#dbeafe] hover:shadow-xl rounded-md">\n';
+// code += '<div class="ctop flex justify-between items-center">\n';
+// code += '<div class="sno px-3 py-1 font-extrabold text-white text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full">Recent</div>\n';
+// code += '<div class="date font-medium"><i class="fa fa-calendar-alt text-blue-700 font-medium"></i> 03-04-2023</div>\n';
+// code += '<div class="edit"><i class="fa fa-pen text-blue-700 font-medium"></i></div>\n';
+// code += '</div>\n';
+// code += '<div class="from-to pt-3 flex justify-evenly font-medium">\n';
+// code += '<div class="from">Tiruvuru</div>\n';
+// code += '<div class="">-- <i class="text-blue-700 fa fa-motorcycle"></i> --</div>\n';
+// code += '<div class="to">Vijayawada</div>\n';
+// code += '</div>\n';
+// code += '<div class="cbottom pt-3 flex">\n';
+// code += '<div class="flex justify-between w-9/12 font-medium">\n';
+// code += '<div class="da"><i class="text-blue-700 font-medium fa fa-soup"></i>100/-</div>\n';
+// code += '<div class="km"></i>25KM</div>\n';
+// code += '<div class="price"><i class="text-blue-700 font-medium fa fa-wallet"></i> 2000/-</i></div>\n';
+// code += '</div>\n';
+// code += '<div class="w-3/12 justify-end flex font-extrabold"><i class="text-blue-700 font-medium fa fa-file-invoice-dollar"></i>&nbsp2125/-</div>\n';
+// code += '</div>\n';
+// code += '</div>\n';
+code += Window.recentBill;
 code += '</div>';
 Swal.fire({
 //   title: '<strong>HTML <u>example</u></strong>',
@@ -233,18 +242,30 @@ Swal.fire({
 
 
 <script>
-    async function tostTest()
+    async function addBillTost(ico,msg)
     {
 
 
         Toast.fire({
-            icon: 'success',
-            title: 'Signed in successfully'
+            icon: ico,
+            title: msg
         })
 
 
         await sleep(1000);
         toggleModal()
+    }
+
+
+    async function NormalTost(ico,msg)
+    {
+
+
+        Toast.fire({
+            icon: ico,
+            title: msg
+        })
+
     }
 </script>
 
@@ -256,19 +277,25 @@ Swal.fire({
 
     // alert("HI")
 
-
+    get_bills();
 
     return false;
     });
 
 
+    function adding_done()
+    {
+        Swal.close();
+        get_bills();
+    }
 
-    function update_pincobde(pincode)
+    function update_pincobde(host,pincode_input)
         {
-
-            $.ajax({
+            if(String(pincode_input).length>5)
+            {
+                $.ajax({
                 type: 'GET',
-                url: "https://api.postalpincode.in/pincode/"+pincode,
+                url: "https://api.postalpincode.in/pincode/"+pincode_input,
 
                 success:function(data){
                 // alert(data);
@@ -286,17 +313,149 @@ Swal.fire({
                         village+="<option value="+obj2[i]['Name']+">"+obj2[i]['Name']+"</option>";
                     }
 
-
-                    $('#from_place').html(village);
+                    var sel= host==1?'#from_place':'#to_place';
+                    // console.log(sel)
+                    $(sel).html(village);
                 }
                 else{
-                    $('#from_place').html("<option>Enter Valid Pincode</option>");
+                    var sel= host==1?'#from_place':'#to_place';
+                    $(sel).html("<option>Enter Valid Pincode</option>");
                 }
 
-                 console.log(data);
+                //  console.log(data);
 
-                 console.log(data[0]['Status']);
+                //  console.log(data[0]['Status']);
                 }
+            });
+            }
+            else{
+                var sel= host==1?'#from_place':'#to_place';
+                $(sel).html("<option>Enter Valid Pincode</option>");
+            }
+
+
+        }
+
+
+        function add_bill()
+        {
+
+
+            var date=$('#date').val();
+            var from_pincode=$('#from_pincode').val();
+            var to_pincode=$('#to_pincode').val();
+
+            var from_place=$('#from_place').val();
+            var to_place=$('#to_place').val();
+
+            var mode = $('input[name="mode"]:checked').val();
+            var km = $('#km').val();
+            var da = $('#da').val();
+            var amount = $('#amount').val();
+
+            recentBillHtml='';
+            recentBillHtml += '<div class="bg-[#eff6ff] mt-2 p-2 mx-2 mt-2 shadow duration-300 hover:bg-[#dbeafe] hover:shadow-xl rounded-md">\n';
+            recentBillHtml += '<div class="ctop flex justify-between items-center">\n';
+            recentBillHtml += '<div class="sno px-3 py-1 font-extrabold text-white text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full">Recent</div>\n';
+            recentBillHtml += '<div class="date font-medium"><i class="fa fa-calendar-alt text-blue-700 font-medium"></i>'+date+'</div>\n';
+            recentBillHtml += '<div class="edit"><i class="fa fa-pen text-blue-700 font-medium"></i></div>\n';
+            recentBillHtml += '</div>\n';
+            recentBillHtml += '<div class="from-to pt-3 flex justify-evenly font-medium">\n';
+            recentBillHtml += '<div class="from">'+from_place+'</div>\n';
+            if(mode=="bike")
+            {
+                recentBillHtml += '<div class="">-- <i class="text-blue-700 fa fa-motorcycle"></i> --</div>\n';
+
+            }
+            else{
+                recentBillHtml += '<div class="">-- <i class="text-blue-700 fa fa-bus"></i> --</div>\n';
+            }
+
+            recentBillHtml += '<div class="to">'+to_place+'</div>\n';
+            recentBillHtml += '</div>\n';
+            recentBillHtml += '<div class="cbottom pt-3 flex">\n';
+            recentBillHtml += '<div class="flex justify-between w-9/12 font-medium">\n';
+            recentBillHtml += '<div class="da"><i class="text-blue-700 font-medium fa fa-soup"></i>'+da+'/-</div>\n';
+            recentBillHtml += '<div class="km"></i>'+km+'KM</div>\n';
+            recentBillHtml += '<div class="price"><i class="text-blue-700 font-medium fa fa-wallet"></i> '+amount+'/-</i></div>\n';
+            recentBillHtml += '</div>\n';
+            var sum =Number.parseInt(da)+Number.parseInt(amount);
+            recentBillHtml += '<div class="w-3/12 justify-end flex font-extrabold"><i class="text-blue-700 font-medium fa fa-file-invoice-dollar"></i>&nbsp'+sum+'/-</div>\n';
+            recentBillHtml += '</div>\n';
+            recentBillHtml += '</div>\n';
+
+            var surl = "{{ config('app.apiurl') }}addbill?bdate="+date
+                +"&bfrompincode="+from_pincode
+                +"&bfromplace="+from_place
+                +"&btopincode="+to_pincode
+                +"&btoplace="+to_place
+                +"&bmode="+mode
+                +"&bkm="+km
+                +"&bda="+da
+                +"&bamount="+amount;
+            console.log(surl);
+            console.log(recentBillHtml);
+            Window.recentBill=recentBillHtml;
+            $.ajax({
+                type: 'GET',
+                url: surl,
+                success:function(data){
+                    // get_recent_bills();
+
+                    addBillTost(data["status"],data["message"]);
+                }
+            });
+
+        }
+
+
+        function get_bills()
+        {
+            var surl = "{{ config('app.apiurl') }}getBills";
+            console.log(surl);
+
+            $.ajax({
+                type: 'GET',
+                url: surl,
+                success:function(data){
+                    NormalTost(data["status"],data["message"]);
+                    $("#billswraper").html(data["data"]);
+                },
+                statusCode: {
+                    500: function() {
+                        NormalTost("error","Internal Server Error");
+                        $("#billswraper").html("<b>Internal Server Error</b>");
+                    }
+                }
+
+            });
+
+            get_recent_bills()
+
+        }
+
+
+        function get_recent_bills()
+        {
+            var surl = "{{ config('app.apiurl') }}getRecentBill";
+            console.log(surl);
+
+            $.ajax({
+                type: 'GET',
+                url: surl,
+                success:function(data){
+                    // NormalTost(data["status"],data["message"]);
+                    $("#recentBill").html(data["data"]);
+                    Window.recentBill=data["data"];
+                },
+                statusCode: {
+                    500: function() {
+                        // NormalTost("error","Internal Server Error");
+                        // $("#billswraper").html("<b>Internal Server Error</b>");
+                        console.log("failed to load recent bill");
+                    }
+                }
+
             });
 
         }
