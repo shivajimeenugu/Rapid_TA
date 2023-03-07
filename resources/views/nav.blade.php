@@ -47,22 +47,22 @@
                 </div>
 
 
-
+ --}}
 
                 <div class="p-2 px-2 mt-4 ml-5 text-xl font-bold  flex justify-start">
                     <i class="far fa-door-open"></i>
                     <a  href="{{ route('logout') }}"
                     onclick="event.preventDefault();
                                   document.getElementById('logout-form').submit();"  class="ml-7">Logout</a>
-                </div> --}}
+                </div>
 
             </div>
         </div>
     </div>
 
-    {{-- <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
         @csrf
-    </form> --}}
+    </form>
     {{-- <div class="lg:hidden sidebar bg-blue-800 text-blue-100 w-80 space-y-6 py-7 px-2 lg:fixed lg:w-4/12 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out" style="background-color: #0A65FF">
         <div class="">
             <div class="pb-14 text-white">

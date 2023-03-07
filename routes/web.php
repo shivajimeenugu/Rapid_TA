@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 Auth::routes();
-Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('root');
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'add'])->name('root');
 
 
-Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [\App\Http\Controllers\HomeController::class, 'add'])->name('home');
 
 Route::get('/add', [\App\Http\Controllers\HomeController::class, 'add'])->name('add');
 Route::get('addbill',[App\Http\Controllers\HomeController::class, 'addBill']);

@@ -21,7 +21,7 @@
                         </label>
 
                         <input id="email" type="email"
-                            class="form-input w-full @error('email') border-red-500 @enderror" name="email"
+                            class="form-input rounded border border-1 w-full @error('email') border-red-500 @enderror" name="email"
                             value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
 
                         @error('email')
