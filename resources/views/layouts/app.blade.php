@@ -320,7 +320,7 @@ Swal.fire({
                 }
                 else{
                     var sel= host==1?'#from_place':'#to_place';
-                    $(sel).html("<option>Enter Valid Pincode</option>");
+                    $(sel).html("<option>Enter Valid Pincode😒</option>");
                 }
 
                 //  console.log(data);
@@ -331,7 +331,7 @@ Swal.fire({
             }
             else{
                 var sel= host==1?'#from_place':'#to_place';
-                $(sel).html("<option>Enter Valid Pincode</option>");
+                $(sel).html("<option>Enter Valid Pincode😒</option>");
             }
 
 
@@ -403,7 +403,7 @@ Swal.fire({
                 success:function(data){
                     // get_recent_bills();
 
-                    addBillTost(data["status"],data["message"]);
+                    addBillTost(data["status"],data["message"]+" 👍");
                 }
             });
 
@@ -414,18 +414,18 @@ Swal.fire({
         {
             var surl = "{{ config('app.apiurl') }}getBills";
             console.log(surl);
-
+            $("#billswraper").html("<b>Bills Loading..😇</b>");
             $.ajax({
                 type: 'GET',
                 url: surl,
                 success:function(data){
-                    NormalTost(data["status"],data["message"]);
+                    // NormalTost(data["status"],data["message"]);
                     $("#billswraper").html(data["data"]);
                 },
                 statusCode: {
                     500: function() {
-                        NormalTost("error","Internal Server Error");
-                        $("#billswraper").html("<b>Internal Server Error</b>");
+                        NormalTost("error","Internal Server Error 😑");
+                        $("#billswraper").html("<b>Internal Server Error 😑</b>");
                     }
                 }
 
