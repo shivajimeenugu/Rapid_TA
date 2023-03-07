@@ -70,7 +70,7 @@ class HomeController extends Controller
                 // $b->bcid=$bcid;
                 if($b->save())
                 {
-                    return response(["status"=>"success","message"=>"Bill Sucessfully Added"]);
+                    return response(["status"=>"success","message"=>"Bill Sucessfully Added","data"=>$this->getManualRecentBill($buser)]);
                 }
                 else{
                     return response(["status"=>"error","message"=>"Somthing Went Worng"]);
@@ -128,7 +128,7 @@ class HomeController extends Controller
                         <div class="km"></i>'.$d["bkm"].'KM</div>
                         <div class="price"><i class="text-blue-700 font-medium fa fa-wallet"></i> '.$d["bamount"].'/-</i></div>
                     </div>
-                    <div class="w-3/12 justify-end flex font-extrabold"><i class="text-blue-700 font-medium fa fa-file-invoice-dollar"></i>&nbsp'.$d["bamount"].'/-</div>
+                    <div class="w-3/12 justify-end flex font-extrabold"><i class="text-blue-700 font-medium fa fa-file-invoice-dollar"></i>&nbsp'.($d["bamount"]+$d["bda"]).'/-</div>
                 </div>
             </div>
 
@@ -184,7 +184,7 @@ class HomeController extends Controller
                         <div class="km"></i>'.$d["bkm"].'KM</div>
                         <div class="price"><i class="text-blue-700 font-medium fa fa-wallet"></i> '.$d["bamount"].'/-</i></div>
                     </div>
-                    <div class="w-3/12 justify-end flex font-extrabold"><i class="text-blue-700 font-medium fa fa-file-invoice-dollar"></i>&nbsp'.$d["bamount"].'/-</div>
+                    <div class="w-3/12 justify-end flex font-extrabold"><i class="text-blue-700 font-medium fa fa-file-invoice-dollar"></i>&nbsp'.($d["bamount"]+$d["bda"]).'/-</div>
                 </div>
             </div>
 
@@ -204,6 +204,56 @@ class HomeController extends Controller
 
     }
 
+
+    public function getManualRecentBill($uid)
+    {
+
+        // try{
+            $user= $uid;
+            $data= bill::where('buser', '=', $user)
+            ->where('bcid', '=', null)
+            ->orderby('created_at')
+            ->get()->last()->toArray();
+
+            $d=$data;
+            // dd($data);
+            $count=1;
+            $htmlData="";
+
+                $htmlData.=
+                '
+                <div class=" bg-[#eff6ff]  p-2 mx-2 mt-2 shadow duration-300 hover:bg-[#dbeafe] hover:shadow-xl rounded-md">
+                <div class="ctop flex justify-between items-center">
+                    <div class="sno px-3 py-1 font-extrabold text-white text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full  ">Recent</div>
+                    <div class="date font-medium"><i class="fa fa-calendar-alt text-blue-700 font-medium"></i> '.$d["bdate"].'</div>
+                    <div class="edit"><i class="fa fa-pen text-blue-700 font-medium"></i></div>
+                </div>
+
+                <div class="from-to pt-3 flex justify-evenly font-medium">
+                    <div class="from">'.$d["bfromplace"].'</div>
+                    <div class=" ">-- <i class="text-blue-700  fa fa-'.($d["bmode"]=="bike"?"motorcycle":"bus").' "></i> --</div>
+                    <div class="to">'.$d["btoplace"].'</div>
+                </div>
+
+                <div class="cbottom pt-3 flex">
+                    <div class="flex justify-between w-9/12 font-medium">
+                        <div class="da"><i class="text-blue-700 font-medium fa fa-soup"></i>'.$d["bda"].'/-</div>
+                        <div class="km"></i>'.$d["bkm"].'KM</div>
+                        <div class="price"><i class="text-blue-700 font-medium fa fa-wallet"></i> '.$d["bamount"].'/-</i></div>
+                    </div>
+                    <div class="w-3/12 justify-end flex font-extrabold"><i class="text-blue-700 font-medium fa fa-file-invoice-dollar"></i>&nbsp'.($d["bamount"]+$d["bda"]).'/-</div>
+                </div>
+            </div>
+
+
+
+                '
+                ;
+
+
+            return $htmlData;
+
+    }
 
 
 }

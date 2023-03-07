@@ -38,6 +38,8 @@
         color: white;
         /* border-color: #4c4; */
         }
+
+
     </style>
 
     <script>
@@ -113,7 +115,7 @@ code += '<div class="flex">\n';
 code += '<div class="relative w-full">\n';
 code += '<input  onkeyup="update_pincobde(1,this.value)" type="number" id="from_pincode" name="from_pincode" class="block p-1 w-full text-sm outline-none rounded-r-lg rounded-l-lg border-[1px] border-blue-500 hover:border-blue-700" required>\n';
 code += '<button id="from_pincode_refresh" class="absolute top-0 right-0 p-1 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">\n';
-code += '<i class="fa fa-redo-alt"></i>\n';
+code += '<i id="from_pincode_refresh_logo" class="fa fa-redo-alt"></i>\n';
 code += '</button>\n';
 code += '</div>\n';
 code += '</div>\n';
@@ -137,7 +139,7 @@ code += '<div class="flex">\n';
 code += '<div class="relative w-full">\n';
 code += '<input  onkeyup="update_pincobde(2,this.value)" type="number" id="to_pincode" name="to_pincode" class="block p-1 w-full text-sm outline-none rounded-r-lg rounded-l-lg border-[1px] border-blue-500 hover:border-blue-700" required>\n';
 code += '<button  id="to_pincode_refresh" class="absolute top-0 right-0 p-1 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">\n';
-code += '<i class="fa fa-redo-alt"></i>\n';
+code += '<i id="to_pincode_refresh_logo" class="fa fa-redo-alt"></i>\n';
 code += '</button>\n';
 code += '</div>\n';
 code += '</div>\n';
@@ -150,12 +152,12 @@ code += '<div class="flex-cols mt-1 w-full">\n';
 code += '<div class="">Select Mode</div>\n';
 code += '<div class="flex radio-toolbar justify-evenly">\n';
 code += '<div class="">\n';
-code += '<input class="opacity-0" type="radio" id="mode_bike" name="mode" value="bike" >\n';
-code += '<label class="rounded px-3 py-2 items-center flex" for="mode_bike"><i class="fa fa-motorcycle"></i></label>\n';
+code += '<input  class="opacity-0" type="radio" id="mode_bike" name="mode" value="bike" >\n';
+code += '<label  id="bike_lable" class="rounded px-3 py-2 items-center flex " for="mode_bike"><i class="fa fa-motorcycle"></i></label>\n';
 code += '</div>\n';
 code += '<div class="">\n';
-code += '<input class="opacity-0" type="radio" id="mode_bus" name="mode" value="bus">\n';
-code += '<label class="rounded px-3 py-2 items-center flex" for="mode_bus"><i class="fa fa-bus"></i></label>\n';
+code += '<input  class="opacity-0" type="radio" id="mode_bus" name="mode" value="bus">\n';
+code += '<label  id="bus_lable" class="rounded px-3 py-2 items-center flex" for="mode_bus"><i class="fa fa-bus"></i></label>\n';
 code += '</div>\n';
 code += '</div>\n';
 code += '</div>\n';
@@ -173,9 +175,10 @@ code += '<input class="outline-none p-1 block w-full rounded-md border-[1px] bor
 code += '</div>\n';
 code += '</div>\n';
 code += '<div class="ffoter pt-3">\n';
+code +=  '<div id="model_error"></div>\n';
 code += '<div class="flex justify-between px-5">\n';
 code += '<button onClick="adding_done()" class="text-white right-2.5 bottom-2.5 bg-gray-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Cancle </button>\n';
-code += '<button onClick="add_bill()" class="text-white right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Add </button>\n';
+code += '<button id="addBillBtn" onClick="add_bill()" class="text-white right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Add </button>\n';
 code += '</div>\n';
 code += '</div>\n';
 code += '</div>\n';
@@ -199,7 +202,7 @@ code += '</div>\n';
 // code += '<div class="w-3/12 justify-end flex font-extrabold"><i class="text-blue-700 font-medium fa fa-file-invoice-dollar"></i>&nbsp2125/-</div>\n';
 // code += '</div>\n';
 // code += '</div>\n';
-code += Window.recentBill;
+code += '<div id="recentBillDiv"></div>';
 code += '</div>';
 Swal.fire({
 //   title: '<strong>HTML <u>example</u></strong>',
@@ -277,7 +280,7 @@ Swal.fire({
     $(document).ready(function(){
 
     // alert("HI")
-
+    Window.modelerrorcount=0;
     get_bills();
 
     return false;
@@ -290,6 +293,24 @@ Swal.fire({
         get_bills();
     }
 
+    // function mode_style(btn)
+    // {
+    //     if(btn=="bike_lable")
+    //     {
+    //         console
+    //         $("bus-lable").removeClass().addClass("text-[#545454]");
+    //         $(btn).addClass("bg-blue-7000 text-white");
+    //     }
+    //     else if(btn=="bus_lable")
+    //     {
+    //         $("bike-lable").removeClass().addClass("text-[#545454]");
+    //         $(btn).addClass("bg-blue-7000 text-white");
+    //     }
+    //     else{
+
+    //     }
+
+    // }
     function update_pincobde(host,pincode_input)
         {
             if(String(pincode_input).length>5)
@@ -297,11 +318,22 @@ Swal.fire({
                 $.ajax({
                 type: 'GET',
                 url: "https://api.postalpincode.in/pincode/"+pincode_input,
+                beforeSend: function() {
+                    // Show a loading message or perform other setup actions
+                    var sel_logo= host==1?'#from_pincode_refresh_logo':'#to_pincode_refresh_logo';
+                    // console.log(sel)
+                    $(sel_logo).addClass("animate-spin");
 
+                },
                 success:function(data){
                 // alert(data);
                 if(data[0]['Status']=="Success")
                 {
+                    var sel_logo= host==1?'#from_pincode_refresh_logo':'#to_pincode_refresh_logo';
+                    // console.log(sel)
+                    $(sel_logo).removeClass("animate-spin");
+
+
                     var count_text=data[0]['Message'];
                     var str = count_text;
                     var pos = str.search(":");
@@ -354,36 +386,43 @@ Swal.fire({
             var da = $('#da').val();
             var amount = $('#amount').val();
 
-            recentBillHtml='';
-            recentBillHtml += '<div class="bg-[#eff6ff] mt-2 p-2 mx-2 mt-2 shadow duration-300 hover:bg-[#dbeafe] hover:shadow-xl rounded-md">\n';
-            recentBillHtml += '<div class="ctop flex justify-between items-center">\n';
-            recentBillHtml += '<div class="sno px-3 py-1 font-extrabold text-white text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full">Recent</div>\n';
-            recentBillHtml += '<div class="date font-medium"><i class="fa fa-calendar-alt text-blue-700 font-medium"></i>'+date+'</div>\n';
-            recentBillHtml += '<div class="edit"><i class="fa fa-pen text-blue-700 font-medium"></i></div>\n';
-            recentBillHtml += '</div>\n';
-            recentBillHtml += '<div class="from-to pt-3 flex justify-evenly font-medium">\n';
-            recentBillHtml += '<div class="from">'+from_place+'</div>\n';
-            if(mode=="bike")
+            if(date=="" || from_pincode=="" || to_pincode=="" || from_place==""|| to_place=="" || mode==undefined || mode=="" || mode==null  || km=="" || amount=="" )
             {
-                recentBillHtml += '<div class="">-- <i class="text-blue-700 fa fa-motorcycle"></i> --</div>\n';
-
+                $("#model_error").html("Must Fill All Fields [MSG_ID:<b>"+Window.modelerrorcount+"</b>]");
+                Window.modelerrorcount=Window.modelerrorcount+1;
             }
             else{
-                recentBillHtml += '<div class="">-- <i class="text-blue-700 fa fa-bus"></i> --</div>\n';
-            }
+                $("#model_error").hide();
+            // recentBillHtml='';
+            // recentBillHtml += '<div class="bg-[#eff6ff] mt-2 p-2 mx-2 mt-2 shadow duration-300 hover:bg-[#dbeafe] hover:shadow-xl rounded-md">\n';
+            // recentBillHtml += '<div class="ctop flex justify-between items-center">\n';
+            // recentBillHtml += '<div class="sno px-3 py-1 font-extrabold text-white text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full">Recent</div>\n';
+            // recentBillHtml += '<div class="date font-medium"><i class="fa fa-calendar-alt text-blue-700 font-medium"></i>'+date+'</div>\n';
+            // recentBillHtml += '<div class="edit"><i class="fa fa-pen text-blue-700 font-medium"></i></div>\n';
+            // recentBillHtml += '</div>\n';
+            // recentBillHtml += '<div class="from-to pt-3 flex justify-evenly font-medium">\n';
+            // recentBillHtml += '<div class="from">'+from_place+'</div>\n';
+            // if(mode=="bike")
+            // {
+            //     recentBillHtml += '<div class="">-- <i class="text-blue-700 fa fa-motorcycle"></i> --</div>\n';
 
-            recentBillHtml += '<div class="to">'+to_place+'</div>\n';
-            recentBillHtml += '</div>\n';
-            recentBillHtml += '<div class="cbottom pt-3 flex">\n';
-            recentBillHtml += '<div class="flex justify-between w-9/12 font-medium">\n';
-            recentBillHtml += '<div class="da"><i class="text-blue-700 font-medium fa fa-soup"></i>'+da+'/-</div>\n';
-            recentBillHtml += '<div class="km"></i>'+km+'KM</div>\n';
-            recentBillHtml += '<div class="price"><i class="text-blue-700 font-medium fa fa-wallet"></i> '+amount+'/-</i></div>\n';
-            recentBillHtml += '</div>\n';
-            var sum =Number.parseInt(da)+Number.parseInt(amount);
-            recentBillHtml += '<div class="w-3/12 justify-end flex font-extrabold"><i class="text-blue-700 font-medium fa fa-file-invoice-dollar"></i>&nbsp'+sum+'/-</div>\n';
-            recentBillHtml += '</div>\n';
-            recentBillHtml += '</div>\n';
+            // }
+            // else{
+            //     recentBillHtml += '<div class="">-- <i class="text-blue-700 fa fa-bus"></i> --</div>\n';
+            // }
+
+            // recentBillHtml += '<div class="to">'+to_place+'</div>\n';
+            // recentBillHtml += '</div>\n';
+            // recentBillHtml += '<div class="cbottom pt-3 flex">\n';
+            // recentBillHtml += '<div class="flex justify-between w-9/12 font-medium">\n';
+            // recentBillHtml += '<div class="da"><i class="text-blue-700 font-medium fa fa-soup"></i>'+da+'/-</div>\n';
+            // recentBillHtml += '<div class="km"></i>'+km+'KM</div>\n';
+            // recentBillHtml += '<div class="price"><i class="text-blue-700 font-medium fa fa-wallet"></i> '+amount+'/-</i></div>\n';
+            // recentBillHtml += '</div>\n';
+            // var sum =Number.parseInt(da)+Number.parseInt(amount);
+            // recentBillHtml += '<div class="w-3/12 justify-end flex font-extrabold"><i class="text-blue-700 font-medium fa fa-file-invoice-dollar"></i>&nbsp'+sum+'/-</div>\n';
+            // recentBillHtml += '</div>\n';
+            // recentBillHtml += '</div>\n';
 
             var surl = "{{ config('app.apiurl') }}addbill?bdate="+date
                 +"&bfrompincode="+from_pincode
@@ -395,17 +434,63 @@ Swal.fire({
                 +"&bda="+da
                 +"&bamount="+amount;
             console.log(surl);
-            console.log(recentBillHtml);
-            Window.recentBill=recentBillHtml;
+            // console.log(recentBillHtml);
+            // Window.recentBill=recentBillHtml;
             $.ajax({
                 type: 'GET',
                 url: surl,
+                beforeSend: function() {
+                    // Show a loading message or perform other setup actions
+                    $('#addBillBtn').removeClass().addClass('inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-orange-700 border border-orange-700 rounded appearance-none cursor-pointer select-none hover:border-orange-800 hover:bg-orange-800 focus:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-300 disabled:pointer-events-none disabled:opacity-75');
+                    $('#addBillBtn').html('<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-spin" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" /></svg><span>Adding</span>');
+                },
                 success:function(data){
                     // get_recent_bills();
+                    if(data["status"]=="success")
+                    {
+                        $('#recentBillDiv').html(data["data"]);
+                        $('#date').val("");
+                        $('#from_pincode').val("");
+                        $('#to_pincode').val("");
 
-                    addBillTost(data["status"],data["message"]+" 👍");
+                        $('#from_place').val("");
+                        $('#to_place').val("");
+
+                        // $('input[name="mode"]:checked').val("");
+                        // $('input:radio[name="mode"]').attr('checked', false);
+
+
+                        $('#km').val("");
+                        $('#da').val("");
+                        $('#amount').val("");
+
+                        $('#addBillBtn').removeClass().addClass('inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-green-700 border border-green-700 rounded appearance-none cursor-pointer select-none hover:border-green-800 hover:bg-green-800 focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-300 disabled:pointer-events-none disabled:opacity-75');
+                        $('#addBillBtn').html('<i class="fa fa-check"></i><span>Done</span>');
+
+                        setTimeout(function() {
+                            $('#addBillBtn').removeClass().addClass('text-white right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2');
+                            $('#addBillBtn').html('Add');
+                        }, 3000);
+                    }
+                    else if(data["status"]=="warning")
+                    {
+                        $('#addBillBtn').removeClass().addClass('inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-yellow-700 border border-yellow-700 rounded appearance-none cursor-pointer select-none hover:border-yellow-800 hover:bg-yellow-800 focus:border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 disabled:pointer-events-none disabled:opacity-75');
+                        $('#addBillBtn').html('<i class="fa fa-exclamation"></i></i><span>Retry</span>');
+                    }
+                    else
+                    {
+                        $('#addBillBtn').removeClass().addClass('inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-yellow-700 border border-yellow-700 rounded appearance-none cursor-pointer select-none hover:border-yellow-800 hover:bg-yellow-800 focus:border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 disabled:pointer-events-none disabled:opacity-75');
+                        $('#addBillBtn').html('<i class="fa-solid fa-rotate-exclamation"></i></i><span>Check All Fields And Retry</span>');
+
+                    }
+
+
+                    // addBillTost(data["status"],data["message"]+" 👍");
                 }
             });
+            }
+
+
 
         }
 
