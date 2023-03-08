@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div class="cardMain flex px-5 pt-2 pb-4 h-[75%]">
+        <div class="cardMain flex px-5 pt-2 pb-4 h-[450px]">
             <div id="billswraper" class="p-3 cardsWarap overflow-y-auto border-1 rounded-lg border-gray-500 bg-white  h-full drop-shadow-2xl w-full">
 
                 <b>Bills Loading..</b>

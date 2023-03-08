@@ -373,7 +373,7 @@ Swal.fire({
         function add_bill()
         {
 
-
+            console.log("Adding Bill");
             var date=$('#date').val();
             var from_pincode=$('#from_pincode').val();
             var to_pincode=$('#to_pincode').val();
@@ -388,6 +388,7 @@ Swal.fire({
 
             if(date=="" || from_pincode=="" || to_pincode=="" || from_place==""|| to_place=="" || mode==undefined || mode=="" || mode==null  || km=="" || amount=="" )
             {
+                console.log("[blank field] Adding Bill");
                 $("#model_error").show();
                 $("#model_error").html("Must Fill All Fields [MSG_ID:<b>"+Window.modelerrorcount+"</b>]");
                 Window.modelerrorcount=Window.modelerrorcount+1;
@@ -447,6 +448,8 @@ Swal.fire({
                     $('#addBillBtn').html('<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-spin" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" /></svg><span>Adding</span>');
                 },
                 success:function(data){
+                console.log(data);
+
                     // get_recent_bills();
                     document.getElementById("addBillBtn").disabled = false;
                     if(data["status"]=="success")
@@ -508,6 +511,277 @@ Swal.fire({
 
 
 
+        }
+
+
+
+        function update_bill(id)
+        {
+
+            console.log("Updating Bill");
+            var date=$('#date').val();
+            var from_pincode=$('#from_pincode').val();
+            var to_pincode=$('#to_pincode').val();
+
+            var from_place=$('#from_place').val();
+            var to_place=$('#to_place').val();
+
+            var mode = $('input[name="mode"]:checked').val();
+            var km = $('#km').val();
+            var da = $('#da').val();
+            var amount = $('#amount').val();
+
+            if(date=="" || from_pincode=="" || to_pincode=="" || from_place==""|| to_place=="" || mode==undefined || mode=="" || mode==null  || km=="" || amount=="" )
+            {
+                console.log("[blank field] Adding Bill");
+                $("#model_error").show();
+                $("#model_error").html("Must Fill All Fields [MSG_ID:<b>"+Window.modelerrorcount+"</b>]");
+                Window.modelerrorcount=Window.modelerrorcount+1;
+            }
+            else{
+                $("#model_error").hide();
+
+
+            var surl = "{{ config('app.apiurl') }}updateBill?bdate="+date
+                +"&bfrompincode="+from_pincode
+                +"&bfromplace="+from_place
+                +"&btopincode="+to_pincode
+                +"&btoplace="+to_place
+                +"&bmode="+mode
+                +"&bkm="+km
+                +"&bda="+da
+                +"&bamount="+amount
+                +"&id="+id
+                ;
+            console.log(surl);
+            // console.log(recentBillHtml);
+            // Window.recentBill=recentBillHtml;
+            $.ajax({
+                type: 'GET',
+                url: surl,
+                beforeSend: function() {
+                    document.getElementById("updateBillBtn").disabled = true;
+                    // Show a loading message or perform other setup actions
+                    $('#updateBillBtn').removeClass().addClass('inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-orange-700 border border-orange-700 rounded appearance-none cursor-pointer select-none hover:border-orange-800 hover:bg-orange-800 focus:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-300 disabled:pointer-events-none disabled:opacity-75');
+                    $('#updateBillBtn').html('<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-spin" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" /></svg><span>Updating</span>');
+                },
+                success:function(data){
+                console.log(data);
+
+                    // get_recent_bills();
+                    document.getElementById("updateBillBtn").disabled = false;
+                    if(data["status"]=="success")
+                    {
+                        // $('#recentBillDiv').html(data["data"]);
+
+                        $('#updateBillBtn').removeClass().addClass('inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-green-700 border border-green-700 rounded appearance-none cursor-pointer select-none hover:border-green-800 hover:bg-green-800 focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-300 disabled:pointer-events-none disabled:opacity-75');
+                        $('#updateBillBtn').html('<i class="fa fa-check"></i><span>Done</span>');
+
+                        setTimeout(function() {
+                            NormalTost(data["status"],data["message"])
+                        }, 2000);
+
+                        $('#editbtn_'+id).removeClass().addClass('mx-2 fa fa-pen text-green-700 font-medium');
+                        adding_done();
+                    }
+                    else if(data["status"]=="warning")
+                    {
+                        $('#updateBillBtn').removeClass().addClass('inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-yellow-700 border border-yellow-700 rounded appearance-none cursor-pointer select-none hover:border-yellow-800 hover:bg-yellow-800 focus:border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 disabled:pointer-events-none disabled:opacity-75');
+                        $('#updateBillBtn').html('<i class="fa fa-exclamation"></i><span>Retry</span>');
+                    }
+                    else if(data["status"]=="error")
+                    {
+                        $('#updateBillBtn').removeClass().addClass('inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-red-700 border border-red-700 rounded appearance-none cursor-pointer select-none hover:border-red-800 hover:bg-red-800 focus:border-red-300 focus:outline-none focus:ring-2 focus:ring-red-300 disabled:pointer-events-none disabled:opacity-75');
+                        $('#updateBillBtn').html('<i class="fa fa-exclamation"></i><span> Error Retry</span>');
+
+                    }
+
+
+                    // addBillTost(data["status"],data["message"]+" 👍");
+                },
+
+                statusCode: {
+                    500: function() {
+                        document.getElementById("updateBillBtn").disabled = false;
+                        // $("#billswraper").html("<b>Internal Server Error 😑</b>");
+                        $('#updateBillBtn').removeClass().addClass('inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-red-700 border border-red-700 rounded appearance-none cursor-pointer select-none hover:border-red-800 hover:bg-red-800 focus:border-red-300 focus:outline-none focus:ring-2 focus:ring-red-300 disabled:pointer-events-none disabled:opacity-75');
+                        $('#updateBillBtn').html('<i class="fa fa-exclamation"></i></i><span>Server Error Retry</span>');
+                    }
+                }
+
+
+
+
+            });
+            }
+
+
+
+        }
+
+
+
+
+
+        function edit_bill(anthanaistam)
+        {
+            var getBillById_URL = "{{ config('app.apiurl') }}getBillById?id="+anthanaistam;
+            // alert(anthanaistam);
+            $.ajax({
+                type: 'GET',
+                url: getBillById_URL,
+                beforeSend: function() {
+                    // Show a loading message or perform other setup actions
+                    $('#editbtn_'+anthanaistam).removeClass().addClass('mx-2 fa fa-sync-alt animate-spin text-blue-700 font-medium');
+                    // $('#editbtn_'+anthanaistam).html('<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-spin" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" /></svg><span>Adding</span>');
+                },
+                success:function(data){
+                    console.log(data);
+                    var edit_model_code = '<div class="fmain">\n';
+                    edit_model_code += '<div class="fwraper bg-[#eff6ff] py-5 mx-2 mt-2 shadow duration-300 hover:bg-[#dbeafe] hover:shadow-xl rounded-md">\n';
+                    edit_model_code += '<div class="fhead rounded-sm flex justify-center items-center text-white bg-blue-700">\n';
+                    edit_model_code += '<div class="shadow font-medium">Edit TA</div>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<div class="fbody mt-1 px-5">\n';
+                    edit_model_code += '<div class="flex-cols">\n';
+                    edit_model_code += '<div class="">Enter Date</div>\n';
+                    edit_model_code += '<input class="outline-none p-1 rounded-md border-[1px] border-blue-500 hover:border-blue-700" type="date" name="date" id="date" value="'+data["data"].bdate+'" required>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<div class="flex flex-col mt-1">\n';
+                    edit_model_code += '<div class="">Enter From</div>\n';
+                    edit_model_code += '<div class="flex justify-evenly">\n';
+                    edit_model_code += '<div class="items-center flex">\n';
+                    edit_model_code += '<label for="from_mode">Pincode&nbsp</label>\n';
+                    edit_model_code += '<input type="radio" name="from_mode" id="from_mode" checked></div>\n';
+                    edit_model_code += '<div class="">\n';
+                    edit_model_code += '<label for="from_mode">Name&nbsp</label>\n';
+                    edit_model_code += '<input type="radio" name="from_mode" id="from_mode" disabled></div>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<div class="flex gap-y-1 flex-col">\n';
+                    edit_model_code += '<div class="flex">\n';
+                    edit_model_code += '<div class="relative w-full">\n';
+                    edit_model_code += '<input value="'+data["data"].bfrompincode+'"  onkeyup="update_pincobde(1,this.value)" type="number" id="from_pincode" name="from_pincode" class="block p-1 w-full text-sm outline-none rounded-r-lg rounded-l-lg border-[1px] border-blue-500 hover:border-blue-700" required>\n';
+                    edit_model_code += '<button id="from_pincode_refresh" class="absolute top-0 right-0 p-1 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">\n';
+                    edit_model_code += '<i id="from_pincode_refresh_logo" class="fa fa-redo-alt"></i>\n';
+                    edit_model_code += '</button>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<select name="from_place" id="from_place" class="outline-none p-1 rounded-md border-[1px] border-blue-500 hover:border-blue-700">\n';
+                    edit_model_code += '<option value="'+data["data"].bfromplace+'" selected >'+data["data"].bfromplace+'</option>\n';
+                    edit_model_code += '</select>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<div class="flex flex-col mt-1">\n';
+                    edit_model_code += '<div class="">Enter To</div>\n';
+                    edit_model_code += '<div class="flex justify-evenly">\n';
+                    edit_model_code += '<div class="items-center flex">\n';
+                    edit_model_code += '<label for="to_mode">Pincode&nbsp</label>\n';
+                    edit_model_code += '<input type="radio" name="to_mode" id="to_mode" checked required></div>\n';
+                    edit_model_code += '<div class="">\n';
+                    edit_model_code += '<label for="to_mode">Name&nbsp</label>\n';
+                    edit_model_code += '<input type="radio" name="to_mode" id="to_mode" disabled required></div>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<div class="flex gap-y-1 flex-col">\n';
+                    edit_model_code += '<div class="flex">\n';
+                    edit_model_code += '<div class="relative w-full">\n';
+                    edit_model_code += '<input value="'+data["data"].btopincode+'" onkeyup="update_pincobde(2,this.value)" type="number" id="to_pincode" name="to_pincode" class="block p-1 w-full text-sm outline-none rounded-r-lg rounded-l-lg border-[1px] border-blue-500 hover:border-blue-700" required>\n';
+                    edit_model_code += '<button  id="to_pincode_refresh" class="absolute top-0 right-0 p-1 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">\n';
+                    edit_model_code += '<i id="to_pincode_refresh_logo" class="fa fa-redo-alt"></i>\n';
+                    edit_model_code += '</button>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<select name="to_place" id="to_place" class="outline-none p-1 rounded-md border-[1px] border-blue-500 hover:border-blue-700">\n';
+                    edit_model_code += '<option value="'+data["data"].btoplace+'" selected>'+data["data"].btoplace+'</option>\n';
+                    edit_model_code += '</select>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<div class="flex-cols mt-1 w-full">\n';
+                    edit_model_code += '<div class="">Select Mode</div>\n';
+                    edit_model_code += '<div class="flex radio-toolbar justify-evenly">\n';
+
+                    if(data["data"].bmode =="bike")
+                    {
+                        edit_model_code += '<div class="">\n';
+                        edit_model_code += '<input  class="opacity-0" type="radio" id="mode_bike" name="mode" value="bike" checked>\n';
+                        edit_model_code += '<label  id="bike_lable" class="rounded px-3 py-2 items-center flex " for="mode_bike"><i class="fa fa-motorcycle"></i></label>\n';
+                        edit_model_code += '</div>\n';
+
+                        edit_model_code += '<div class="">\n';
+                        edit_model_code += '<input  class="opacity-0" type="radio" id="mode_bus" name="mode" value="bus">\n';
+                        edit_model_code += '<label  id="bus_lable" class="rounded px-3 py-2 items-center flex" for="mode_bus"><i class="fa fa-bus"></i></label>\n';
+                        edit_model_code += '</div>\n';
+
+                    }
+                    else if(data["data"].bmode =="bus")
+                    {
+                        edit_model_code += '<div class="">\n';
+                        edit_model_code += '<input  class="opacity-0" type="radio" id="mode_bike" name="mode" value="bike" >\n';
+                        edit_model_code += '<label  id="bike_lable" class="rounded px-3 py-2 items-center flex " for="mode_bike"><i class="fa fa-motorcycle"></i></label>\n';
+                        edit_model_code += '</div>\n';
+
+                        edit_model_code += '<div class="">\n';
+                        edit_model_code += '<input  class="opacity-0" type="radio" id="mode_bus" name="mode" value="bus" checked>\n';
+                        edit_model_code += '<label  id="bus_lable" class="rounded px-3 py-2 items-center flex" for="mode_bus"><i class="fa fa-bus"></i></label>\n';
+                        edit_model_code += '</div>\n';
+                    }
+                    else{
+
+                        edit_model_code += '<div class="">\n';
+                        edit_model_code += '<input  class="opacity-0" type="radio" id="mode_bike" name="mode" value="bike" >\n';
+                        edit_model_code += '<label  id="bike_lable" class="rounded px-3 py-2 items-center flex " for="mode_bike"><i class="fa fa-motorcycle"></i></label>\n';
+                        edit_model_code += '</div>\n';
+
+                        edit_model_code += '<div class="">\n';
+                        edit_model_code += '<input  class="opacity-0" type="radio" id="mode_bus" name="mode" value="bus" >\n';
+                        edit_model_code += '<label  id="bus_lable" class="rounded px-3 py-2 items-center flex" for="mode_bus"><i class="fa fa-bus"></i></label>\n';
+                        edit_model_code += '</div>\n';
+                    }
+
+
+
+
+
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<div class="flex-cols mt-1 w-full">\n';
+                    edit_model_code += '<div class="">Enter KM</div>\n';
+                    edit_model_code += '<input value="'+data["data"].bkm+'" class="outline-none block w-full p-1 rounded-md border-[1px] border-blue-500 hover:border-blue-700" type="number" name="km" id="km">\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<div class="flex-cols mt-1">\n';
+                    edit_model_code += '<div class="">Enter DA</div>\n';
+                    edit_model_code += '<input value="'+data["data"].bda+'" class="outline-none p-1 block w-full rounded-md border-[1px] border-blue-500 hover:border-blue-700" type="number" name="da" id="da">\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<div class="flex-cols mt-1">\n';
+                    edit_model_code += '<div class="">Enter Amount</div>\n';
+                    edit_model_code += '<input value="'+data["data"].bamount+'" class="outline-none p-1 block w-full rounded-md border-[1px] border-blue-500 hover:border-blue-700" type="number" name="amount" id="amount">\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '<div class="ffoter pt-3">\n';
+                    edit_model_code +=  '<div id="model_error" class="bg-red-500 text-white font-bold" ></div>\n';
+                    edit_model_code += '<div class="flex justify-between px-5">\n';
+                    edit_model_code += '<button onClick="adding_done()" class="text-white right-2.5 bottom-2.5 bg-gray-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Cancle </button>\n';
+                    edit_model_code += '<button id="updateBillBtn" onClick="update_bill(\''+anthanaistam+'\')" class="text-white right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Update </button>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '</div>\n';
+                    edit_model_code += '</div>\n';
+                    // edit_model_code += '<div id="recentBillDiv"></div>';
+                    edit_model_code += '</div>';
+                    Swal.fire({
+                    html:edit_model_code,
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        background: 'transparent'
+                    })
+                },
+                statusCode: {
+                    500: function() {
+                        $('#editbtn_'+anthanaistam).removeClass().addClass('mx-2 fa fa-sync-alt text-red-700 font-medium');
+                        NormalTost("error","Internal Server Error 😑");
+                        // $("#billswraper").html("<b>Internal Server Error 😑</b>");
+                    }
+                }
+
+            });
         }
 
 

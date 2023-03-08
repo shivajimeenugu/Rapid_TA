@@ -26,3 +26,6 @@ Route::get('/add', [\App\Http\Controllers\HomeController::class, 'add'])->name('
 Route::get('addbill',[App\Http\Controllers\HomeController::class, 'addBill']);
 Route::get('getBills',[App\Http\Controllers\HomeController::class, 'getBills']);
 Route::get('getRecentBill',[App\Http\Controllers\HomeController::class, 'getRecentBill']);
+Route::get('getBillById',[App\Http\Controllers\HomeController::class, 'getBillById']);
+Route::get('updateBill',[App\Http\Controllers\HomeController::class, 'updateBill']);
+
