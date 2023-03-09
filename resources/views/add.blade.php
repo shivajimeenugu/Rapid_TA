@@ -2,10 +2,10 @@
 
 @section('content')
 
-<div class="  justify-center ">
-    <div class=" w-full    pb-16  ">
-        <div class="pb-4 mt-4">
-            <div class="p-2 px-2 mt-2 ml-4 mr-4 text-2xl  items-center flex justify-between">
+<div class=" h-full justify-center ">
+    <div class=" w-full h-full   pb-16  ">
+        <div class="pb-4 pt-4">
+            <div class="py-2 px-2 ml-4 mr-4 text-2xl  items-center flex justify-between">
                 <button class="mobile-menu-button "><i class="fas fa-align-left"></i></button>
 
                 {{-- <a onclick="event.preventDefault();
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div id="billswraper" class=" hover1:bg-[#dbeafe] bg-white mx-3  h-[30rem]  rounded-xl overflow-x-auto  px-5 pt-2 pb-4 ">
+        <div id="billswraper" class=" hover1:bg-[#dbeafe] bg-white mx-3  h-[63vh]  rounded-xl overflow-x-auto  px-5 pt-2 pb-4 ">
 
 
             <b>Bills Loading..</b>
