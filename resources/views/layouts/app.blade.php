@@ -994,6 +994,97 @@ console.log(pincode);
 
         }
 
+
+
+        function add_clime() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Submit Clime!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var deleteBill_URL = "{{ config('app.apiurl') }}addClime";
+                    $.ajax({
+                        type: 'GET',
+                        url: deleteBill_URL,
+                        beforeSend: function() {
+                            $('#addClimeBtn').removeClass().addClass(
+                            'inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-orange-700 border border-orange-700 rounded appearance-none cursor-pointer select-none hover:border-orange-800 hover:bg-orange-800 focus:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-300 disabled:pointer-events-none disabled:opacity-75'
+                            );
+                            $('#addClimeBtn').html(
+                            '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-spin" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" /></svg><span>Submitting..</span>'
+                            );
+                        },
+                        success: function(data) {
+
+                            // console.log(data);
+                            if(data["status"] == "success")
+                            {
+
+                            $('#addClimeBtn').removeClass().addClass(
+                                'inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-green-700 border border-green-700 rounded appearance-none cursor-pointer select-none hover:border-green-800 hover:bg-green-800 focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-300 disabled:pointer-events-none disabled:opacity-75'
+                                );
+                            $('#addClimeBtn').html('<i class="fa fa-check"></i><span>Done</span>');
+
+                            setTimeout(function() {
+                                $('#addClimeBtn').removeClass().addClass(
+                                    'text-white p-3  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm dark1:bg-blue-600 dark1:hover:bg-blue-700 dark1:focus:ring-blue-800'
+                                    );
+                                $('#addClimeBtn').html('Submit To Manager');
+                            }, 3000);
+
+                            }
+                            else if (data["status"] == "warning") {
+                                NormalTost(data["status"],data["message"]);
+                                $('#addClimeBtn').removeClass().addClass(
+                                    'inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-yellow-700 border border-yellow-700 rounded appearance-none cursor-pointer select-none hover:border-yellow-800 hover:bg-yellow-800 focus:border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 disabled:pointer-events-none disabled:opacity-75'
+                                    );
+                                $('#addClimeBtn').html('<i class="fa fa-exclamation"></i><span>Retry</span>');
+                            } else if (data["status"] == "error") {
+                                NormalTost(data["status"],data["message"]);
+                                $('#addClimeBtn').removeClass().addClass(
+                                    'inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-red-700 border border-red-700 rounded appearance-none cursor-pointer select-none hover:border-red-800 hover:bg-red-800 focus:border-red-300 focus:outline-none focus:ring-2 focus:ring-red-300 disabled:pointer-events-none disabled:opacity-75'
+                                    );
+                                $('#addClimeBtn').html('<i class="fa fa-exclamation"></i><span> Error Retry</span>');
+
+                            }
+
+                            get_bills();
+
+                            // Swal.fire(
+                            //     'Submitted!',
+                            //     'Your Bills Are Submitted.',
+                            //     'success'
+                            // )
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#addClimeBtn').removeClass().addClass(
+                                    'inline-flex items-center justify-center w-auto px-3 py-2 space-x-2 text-sm font-medium text-white transition bg-red-700 border border-red-700 rounded appearance-none cursor-pointer select-none hover:border-red-800 hover:bg-red-800 focus:border-red-300 focus:outline-none focus:ring-2 focus:ring-red-300 disabled:pointer-events-none disabled:opacity-75'
+                                    );
+                                $('#addClimeBtn').html('<i class="fa fa-exclamation"></i><span> Error Retry</span>');
+
+                                NormalTost("error", "Internal Server Error 😑");
+                                // $("#billswraper").html("<b>Internal Server Error 😑</b>");
+                            }
+                        }
+
+                    });
+                }
+            })
+
+
+
+
+        }
+
+
+
+
         function get_bills() {
             var surl = "{{ config('app.apiurl') }}getBills";
             // console.log(surl);
@@ -1003,7 +1094,15 @@ console.log(pincode);
                 url: surl,
                 success: function(data) {
                     // NormalTost(data["status"],data["message"]);
-                    $("#billswraper").html(data["data"]);
+                    if(data["status"]=="success")
+                    {
+                        $("#billswraper").html(data["data"]);
+
+                    }
+                    else{
+                        NormalTost("warning", "Lets Add Bills 🥳");
+                        $("#billswraper").html("<b>"+data["message"]+"</b>");
+                    }
                 },
                 statusCode: {
                     500: function() {

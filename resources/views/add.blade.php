@@ -43,7 +43,7 @@
         </div>
 
         <div class="flex justify-center items-center py-4 ">
-            <button type="submit" class="text-white p-3  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm dark1:bg-blue-600 dark1:hover:bg-blue-700 dark1:focus:ring-blue-800">Submit To Manager</button>
+            <button onclick="add_clime()" id="addClimeBtn" class="text-white p-3  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm dark1:bg-blue-600 dark1:hover:bg-blue-700 dark1:focus:ring-blue-800">Submit To Manager</button>
         </div>
 
     </div>

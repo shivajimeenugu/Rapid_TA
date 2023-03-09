@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\bill;
+use App\Models\clime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 
 
 
@@ -170,8 +172,9 @@ class HomeController extends Controller
             $data= bill::where('buser', '=', $user)
             ->where('bcid', '=', null)
             ->get()->toArray();
-
-            // dd($data);
+            if(count($data)>0)
+            {
+                 // dd($data);
             $count=1;
             $htmlData="";
             foreach($data as $d)
@@ -213,6 +216,13 @@ class HomeController extends Controller
             }
 
             return response(["status"=>"success","message"=> "Bills Sucessfully Fetched","data"=>$htmlData]);
+
+            }
+            else{
+            return response(["status"=>"warning","message"=> "No Bills Found 🤷‍♂️","data"=>[]]);
+
+            }
+
         }
         catch(\Exception $e) {
             // echo 'Message: ' .$e->getMessage();
@@ -413,5 +423,92 @@ class HomeController extends Controller
             return response(["status"=>"error","message"=>$e->getMessage()]);
         }
     }
+
+
+    public function addClime(Request $req)
+    {
+        try {
+
+            $user= $req->user()->id;
+
+            $data= bill::where('buser', '=', $user)
+            ->where('bcid', '=', null)
+            ->get()->toArray();
+
+            // dd(count($data));
+
+            if(count($data)>0)
+            {
+                $sum_da= bill::where('buser', '=', $user)
+                ->where('bcid', '=', null)
+                ->sum('bda');
+
+                $sum_ta= bill::where('buser', '=', $user)
+                ->where('bcid', '=', null)
+                ->sum('bamount');
+
+                $camount=$sum_da+$sum_ta;
+
+
+                $c = new clime;
+                $c->cuser=$user;
+                $c->camount=$camount;
+                $c->cstatus="Submitted";
+
+                if($c->save())
+                {
+                    $b=bill::where('buser', $user)
+                    ->where('bcid', null)
+                    ->update(['bcid' => $c->id]);
+
+                    if($b)
+                    {
+                        return response(["status"=>"success","message"=>"Clime Sucessfully Submitted","data"=>["clime"=>$c,"bills"=>$b]]);
+                    }
+                    else{
+                        return response(["status"=>"error","message"=>"Clime Created But Not Linked To Bills"]);
+                    }
+
+                }
+                else{
+                    return response(["status"=>"error","message"=>"Error While Creating Clime"]);
+                }
+            }
+            else{
+                return response(["status"=>"warning","message"=>"No Bills Found"]);
+            }
+
+
+        } catch (\Exception $e) {
+
+            return response(["status"=>"error","message"=>$e->getMessage()]);
+
+        }
+    }
+
+
+    // public function generateUniqueCode() {
+    //     $length = 6;
+    //     $year = date('y');
+    //     $month = date('m');
+    //     $code = $year . $month;
+    //     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    //     // loop to generate random code
+    //     for ($i = 0; $i < $length - 4; $i++) {
+    //         $code .= $characters[mt_rand(0, strlen($characters) - 1)];
+    //     }
+
+    //     // check if the code already exists in the database
+    //     while (DB::table('climes')->where('', $code)->exists()) {
+    //         // if the code already exists, generate a new one
+    //         $code = $year . $month;
+    //         for ($i = 0; $i < $length - 4; $i++) {
+    //             $code .= $characters[mt_rand(0, strlen($characters) - 1)];
+    //         }
+    //     }
+
+    //     return $code;
+    // }
 
 }
