@@ -785,6 +785,54 @@ Swal.fire({
         }
 
 
+
+        function delete_bill(anthanaistam)
+        {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                        var deleteBill_URL = "{{ config('app.apiurl') }}deleteBill?id="+anthanaistam;
+                        $.ajax({
+                        type: 'GET',
+                        url: deleteBill_URL,
+                        beforeSend: function() {
+                            // Show a loading message or perform other setup actions
+                            $('#deletebtn_'+anthanaistam).removeClass().addClass('mx-2 fa fa-sync-alt animate-spin text-blue-700 font-medium');
+                            // $('#editbtn_'+anthanaistam).html('<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-spin" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" /></svg><span>Adding</span>');
+                        },
+                        success:function(data){
+                            get_bills();
+                            console.log(data);
+                            Swal.fire(
+                            'Deleted!',
+                            'Your recoed has been deleted.',
+                            'success'
+                            )
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#deletebtn_'+anthanaistam).removeClass().addClass('mx-2 fa fa-sync-alt text-red-700 font-medium');
+                                NormalTost("error","Internal Server Error 😑");
+                                // $("#billswraper").html("<b>Internal Server Error 😑</b>");
+                            }
+                        }
+
+                    });
+                }
+                })
+
+
+
+
+        }
+
         function get_bills()
         {
             var surl = "{{ config('app.apiurl') }}getBills";

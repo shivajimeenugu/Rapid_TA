@@ -29,3 +29,4 @@ Route::get('getRecentBill',[App\Http\Controllers\HomeController::class, 'getRece
 Route::get('getBillById',[App\Http\Controllers\HomeController::class, 'getBillById']);
 Route::get('updateBill',[App\Http\Controllers\HomeController::class, 'updateBill']);
 
+Route::get('deleteBill',[App\Http\Controllers\HomeController::class, 'deleteBill']);

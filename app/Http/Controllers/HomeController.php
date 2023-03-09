@@ -349,4 +349,30 @@ class HomeController extends Controller
     }
 
 
+    public function deleteBill(Request $req)
+    {
+        try{
+            $id = Crypt::decrypt($req->id,false);
+
+            $b = bill::find($id);
+            if($b)
+            {
+                if($b->delete())
+                {
+                    return response(["status"=>"success","message"=>"Bill Sucessfully Deleted","data"=>$b]);
+                }
+
+            }
+            else{
+                return response(["status"=>"warning","message"=>"No Bill Found Using This Id","data"=>[]]);
+            }
+
+
+        }
+        catch(\Exception $e) {
+
+            return response(["status"=>"error","message"=>$e->getMessage()]);
+        }
+    }
+
 }
