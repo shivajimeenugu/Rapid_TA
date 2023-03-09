@@ -18,7 +18,7 @@
 
         <div class=" px-5 pb-2">
             <div class="flex justify-between">
-                <form>
+                <div id="searchbox">
                     <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark1:text-white">Search</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -27,7 +27,8 @@
                         <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark1:bg-gray-700 dark1:border-gray-600 dark1:placeholder-gray-400 dark1:text-white dark1:focus:ring-blue-500 dark1:focus:border-blue-500" placeholder="Search TA" required>
                         <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark1:bg-blue-600 dark1:hover:bg-blue-700 dark1:focus:ring-blue-800">Search</button>
                     </div>
-                </form>
+
+                </div>
                 <button type="submit" class="text-white w-[18%]  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-1 dark1:bg-blue-600 dark1:hover:bg-blue-700 dark1:focus:ring-blue-800" onclick="toggleModal()"><i class="fa fa-plus text-[20px]"></i></button>
             </div>
         </div>

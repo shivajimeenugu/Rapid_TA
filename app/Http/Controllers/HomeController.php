@@ -181,7 +181,7 @@ class HomeController extends Controller
                 '
                 <div class=" bg-[#eff6ff]  p-2 mx-2 mt-2 shadow duration-300 hover:bg-[#dbeafe] hover:shadow-xl rounded-md">
                 <div class="ctop flex justify-between items-center">
-                    <div class="sno px-3 py-1 font-extrabold text-white text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full  ">'.$count++.'</div>
+                    <div id="billcard_'.$mask_id.'" onclick="toggle_selected(\''.$mask_id.'\','.$count.')" class="sno px-3 py-1 font-extrabold text-white text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full  ">'.$count.'</div>
                     <div class="date font-medium"><i class="fa fa-calendar-alt text-blue-700 font-medium"></i> '.$d["bdate"].'</div>
                     <div class="edit flex">
                     <i id="deletebtn_'.$mask_id.'" onclick="delete_bill(\''.$mask_id.'\')" class="mx-2 fa fa-trash text-red-700 font-medium"></i>
@@ -209,6 +209,7 @@ class HomeController extends Controller
 
                 '
                 ;
+            $count++;
             }
 
             return response(["status"=>"success","message"=> "Bills Sucessfully Fetched","data"=>$htmlData]);
@@ -366,6 +367,44 @@ class HomeController extends Controller
             else{
                 return response(["status"=>"warning","message"=>"No Bill Found Using This Id","data"=>[]]);
             }
+
+
+        }
+        catch(\Exception $e) {
+
+            return response(["status"=>"error","message"=>$e->getMessage()]);
+        }
+    }
+
+
+    public function deleteBills(Request $req)
+    {
+        try{
+
+            $ids=json_decode($req->ids);
+            // dd($ids);
+            $deleted_records=[];
+            foreach($ids as $raw_id)
+            {
+
+                $id = Crypt::decrypt($raw_id,false);
+
+                $b = bill::find($id);
+                if($b)
+                {
+                    array_push($deleted_records,$b);
+                    $b->delete();
+
+                }
+            }
+
+
+
+            return response(["status"=>"success","message"=>"Bill Sucessfully Deleted ".count($deleted_records)." Recordes ","data"=>$deleted_records]);
+
+            // else{
+            //     return response(["status"=>"warning","message"=>"No Bill Found Using This Id","data"=>[]]);
+            // }
 
 
         }
