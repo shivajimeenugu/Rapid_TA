@@ -57,7 +57,7 @@
     </script>
 
 </head>
-<body class=" h-screen antialiased leading-none font-sans">
+<body class=" h-screen bg-gray-100 antialiased leading-none font-sans">
     <div id="app ">
         @include("nav")
         <main class=" h-full bg-gray-100">
@@ -175,7 +175,7 @@ code += '<input class="outline-none p-1 block w-full rounded-md border-[1px] bor
 code += '</div>\n';
 code += '</div>\n';
 code += '<div class="ffoter pt-3">\n';
-code +=  '<div id="model_error"></div>\n';
+code +=  '<div id="model_error" class="bg-red-700 rounded shadow text-white font-bold m-2"></div>\n';
 code += '<div class="flex justify-between px-5">\n';
 code += '<button onClick="adding_done()" class="text-white right-2.5 bottom-2.5 bg-gray-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Cancle </button>\n';
 code += '<button id="addBillBtn" onClick="add_bill()" class="text-white right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Add </button>\n';
@@ -757,7 +757,7 @@ Swal.fire({
                     edit_model_code += '</div>\n';
                     edit_model_code += '</div>\n';
                     edit_model_code += '<div class="ffoter pt-3">\n';
-                    edit_model_code +=  '<div id="model_error" class="bg-red-500 text-white font-bold" ></div>\n';
+                    edit_model_code +=  '<div id="model_error" class="bg-red-700 rounded shadow text-white font-bold m-2" ></div>\n';
                     edit_model_code += '<div class="flex justify-between px-5">\n';
                     edit_model_code += '<button onClick="adding_done()" class="text-white right-2.5 bottom-2.5 bg-gray-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Cancle </button>\n';
                     edit_model_code += '<button id="updateBillBtn" onClick="update_bill(\''+anthanaistam+'\')" class="text-white right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"> Update </button>\n';
