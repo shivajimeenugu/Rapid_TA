@@ -57,10 +57,10 @@
     </script>
 
 </head>
-<body class=" h-screen bg-gray-100 antialiased leading-none font-sans">
+<body class=" h-screen  bg-gray-100 antialiased leading-none font-sans">
     <div id="app ">
-        @include("nav")
-        <main class=" h-full bg-gray-100">
+        {{-- @include("nav") --}}
+        <main class="  bg-gray-100">
             @yield('content')
         </main>
     </div>

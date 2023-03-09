@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class=" h-full flex justify-center ">
-    <div class=" w-full h-full pb-16 bag ">
+<div class="  justify-center ">
+    <div class=" w-full    pb-16  ">
         <div class="pb-4 mt-4">
             <div class="p-2 px-2 mt-2 ml-4 mr-4 text-2xl  items-center flex justify-between">
                 <button class="mobile-menu-button "><i class="fas fa-align-left"></i></button>
@@ -16,7 +16,7 @@
 
         </div>
 
-        <div class=" px-5">
+        <div class=" px-5 pb-2">
             <div class="flex justify-between">
                 <form>
                     <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark1:text-white">Search</label>
@@ -32,17 +32,17 @@
             </div>
         </div>
 
-        <div class="cardMain flex px-5 pt-2 pb-4 h-[450px]">
-            <div id="billswraper" class="p-3 cardsWarap overflow-y-auto border-1 rounded-lg border-gray-500 bg-white  h-full drop-shadow-2xl w-full">
-
-                <b>Bills Loading..</b>
+        <div id="billswraper" class=" hover1:bg-[#dbeafe] bg-white mx-3  h-[30rem]  rounded-xl overflow-x-auto  px-5 pt-2 pb-4 ">
 
 
-            </div>
+            <b>Bills Loading..</b>
+            {{-- <div id="billswraper2" class="p-3 overflow-hidden h-3/12 bg-green-500  border-1 rounded-lg border-gray-500    drop-shadow-2xl w-full">
+
+            </div> --}}
         </div>
 
         <div class="flex justify-center items-center py-4 ">
-            <button type="submit" class="text-white p-3  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 dark1:bg-blue-600 dark1:hover:bg-blue-700 dark1:focus:ring-blue-800">Submit To Manager</button>
+            <button type="submit" class="text-white p-3  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm dark1:bg-blue-600 dark1:hover:bg-blue-700 dark1:focus:ring-blue-800">Submit To Manager</button>
         </div>
 
     </div>
