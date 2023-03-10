@@ -435,6 +435,9 @@ class HomeController extends Controller
         try {
 
             $user= $req->user()->id;
+            $uname= $req->user()->name;
+            $uemail=$req->user()->email;
+            // dd($uemail);
 
             $data= bill::where('buser', '=', $user)
             ->where('bcid', '=', null)
@@ -468,7 +471,15 @@ class HomeController extends Controller
 
                     if($b)
                     {
-                        $this->send_mail($c->id);
+                        $this->send_mail
+                        (
+                            [
+                                "cid"=>$c->id,
+                                "uname"=>$uname,
+                                "email"=>$uemail
+                            ]
+                        );
+                        
                         return response(["status"=>"success","message"=>"Clime Sucessfully Submitted","data"=>["clime"=>$c,"bills"=>$b]]);
                     }
                     else{
@@ -493,9 +504,9 @@ class HomeController extends Controller
     }
 
 
-    public function send_mail($cid)
+    public function send_mail($data)
     {
-        $emailJobs = new TestSendEmail($cid);
+        $emailJobs = new TestSendEmail($data);
         $this->dispatch($emailJobs);
 
         return true;

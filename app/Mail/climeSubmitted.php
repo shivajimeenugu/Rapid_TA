@@ -18,11 +18,11 @@ class climeSubmitted extends Mailable
      *
      * @return void
      */
-    protected $cid="";
-    public function __construct($CID)
+    protected $data=[];
+    public function __construct($data)
     {
         // $this->middleware('auth');
-        $this->cid=$CID;
+        $this->data=$data;
     }
 
     /**
@@ -36,17 +36,17 @@ class climeSubmitted extends Mailable
         $data["title"] = "Sivaji Meenugu";
 
         // $file_path = public_path('bills.xlsx');
-        Excel::store(new billExport($this->cid),'attachments/CLAIM_'.$this->cid.'.xlsx');
+        Excel::store(new billExport($this->data["cid"]),'attachments/CLAIM_'.$this->data["cid"].'.xlsx');
 
         $files = [
 
             // storage_path('app/attachments/srq.pdf')
-            storage_path('app/attachments/CLAIM_'.$this->cid.'.xlsx')
+            storage_path('app/attachments/CLAIM_'.$this->data["cid"].'.xlsx')
         ];
         // return $this->view('view.name');
-        return $this->to($data['email'])
+        return $this->to($this->data['email'])
                     ->subject($data['title'])
-                    ->view('mail.Test_mail',["cid"=>$this->cid])
+                    ->view('mail.Test_mail',["cid"=>$this->data["cid"],"uname"=> $this->data["uname"]])
                     ->with($data)
                     ->attach($files[0]);
                     // ->attach($files[1]);

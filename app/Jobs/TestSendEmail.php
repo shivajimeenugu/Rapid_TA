@@ -19,11 +19,11 @@ class TestSendEmail implements ShouldQueue
      *
      * @return void
      */
-    protected $cid="";
-    public function __construct($CID)
+    protected $data=[];
+    public function __construct($data)
     {
         // $this->middleware('auth');
-        $this->cid=$CID;
+        $this->data=$data;
     }
 
     /**
@@ -34,7 +34,7 @@ class TestSendEmail implements ShouldQueue
     public function handle()
     {
         //
-        $email = new climeSubmitted($this->cid);
+        $email = new climeSubmitted($this->data);
         Mail::send($email);
     }
 }
