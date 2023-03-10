@@ -32,3 +32,6 @@ Route::get('updateBill',[App\Http\Controllers\HomeController::class, 'updateBill
 Route::get('deleteBill',[App\Http\Controllers\HomeController::class, 'deleteBill']);
 Route::get('deleteBills',[App\Http\Controllers\HomeController::class, 'deleteBills']);
 Route::get('addClime',[App\Http\Controllers\HomeController::class, 'addClime']);
+Route::get('send',[App\Http\Controllers\HomeController::class, 'send_mail']);
+Route::get('export',[App\Http\Controllers\HomeController::class, 'export']);
+Route::get('test_mail_view',[App\Http\Controllers\HomeController::class, 'test_mail_view']);

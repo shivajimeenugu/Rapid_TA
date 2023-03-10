@@ -7,8 +7,11 @@ use App\Models\clime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
-
-
+use App\Mail\climeSubmitted;
+use Illuminate\Support\Facades\Mail;
+use App\Exports\billExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Jobs\TestSendEmail;
 
 class HomeController extends Controller
 {
@@ -38,6 +41,8 @@ class HomeController extends Controller
         // dd($req);
         return view('add');
     }
+
+
 
 
     public function addBill(Request $req)
@@ -463,6 +468,7 @@ class HomeController extends Controller
 
                     if($b)
                     {
+                        $this->send_mail($c->id);
                         return response(["status"=>"success","message"=>"Clime Sucessfully Submitted","data"=>["clime"=>$c,"bills"=>$b]]);
                     }
                     else{
@@ -487,28 +493,36 @@ class HomeController extends Controller
     }
 
 
-    // public function generateUniqueCode() {
-    //     $length = 6;
-    //     $year = date('y');
-    //     $month = date('m');
-    //     $code = $year . $month;
-    //     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    public function send_mail($cid)
+    {
+        $emailJobs = new TestSendEmail($cid);
+        $this->dispatch($emailJobs);
 
-    //     // loop to generate random code
-    //     for ($i = 0; $i < $length - 4; $i++) {
-    //         $code .= $characters[mt_rand(0, strlen($characters) - 1)];
-    //     }
+        return true;
 
-    //     // check if the code already exists in the database
-    //     while (DB::table('climes')->where('', $code)->exists()) {
-    //         // if the code already exists, generate a new one
-    //         $code = $year . $month;
-    //         for ($i = 0; $i < $length - 4; $i++) {
-    //             $code .= $characters[mt_rand(0, strlen($characters) - 1)];
-    //         }
-    //     }
+    }
 
-    //     return $code;
-    // }
+    public function test_mail(Request $req)
+    {
+
+        return response(["status"=>"success","message"=>"Mail Sucessfully Sent","data"=>[]]);
+
+
+    }
+
+    public function test_mail_view(Request $req)
+    {
+
+        return view('vendor.laravel.framework.src.Illuminate.Mail.resources.views.html.message',["level"=>1,"introLines"=>[],"outroLines"=>[]]);
+
+
+    }
+
+    public function export()
+    {
+        return Excel::download(new billExport(5), 'bills.xlsx');
+
+    }
+
 
 }
